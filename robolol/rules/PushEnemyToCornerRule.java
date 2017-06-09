@@ -98,7 +98,7 @@ public class PushEnemyToCornerRule implements Rule {
         Double robotDistance = Math.sqrt(Math.pow(positionDetails.get_enemyX() - positionDetails.getOurX(), 2) +
                 Math.pow(positionDetails.get_enemyY() - positionDetails.getOurY(), 2));
         if (wantedDistance > 100 || robotDistance > 100){
-        robot.setAhead(robotDistance/5);
+        robot.setAhead(robotDistance/4);
         } else {
             robot.setTurnRight(positionDetails.getEnemyBearing() + 90);
             robot.setTurnGunLeft(positionDetails.getEnemyBearing() + 90);
