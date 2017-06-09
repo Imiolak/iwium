@@ -82,16 +82,27 @@ public class PushEnemyToCornerRule implements Rule {
         double theta = Math.atan2(wantedY - positionDetails.getOurY(), wantedX - positionDetails.getOurX());
         theta += Math.PI/2.0;
         double angle = Math.toDegrees(theta);
-        if (angle < 0)
-            angle += 360.0;
+        if (angle < 0){
+            angle += 360.0;}
 
-        Double angleDifference = angle - positionDetails.getOurHeading();
-        if (robot.getTurnRemaining() < 10)
-            robot.setTurnRight(angleDifference);
+        double angleDifference = angle - positionDetails.getOurHeading();
+        //if (angleDifference > 5){
+        //   robot.setTurnRight(angleDifference);}
 
-        Double distance = Math.sqrt(Math.pow(positionDetails.get_enemyX() - positionDetails.getOurX(), 2) +
+        angle = positionDetails.getEnemyBearing();
+        robot.setTurnRight(angle);
+
+
+        Double wantedDistance = Math.sqrt(Math.pow(wantedX - positionDetails.getOurX(), 2) +
+                Math.pow(wantedY - positionDetails.getOurY(), 2));
+        Double robotDistance = Math.sqrt(Math.pow(positionDetails.get_enemyX() - positionDetails.getOurX(), 2) +
                 Math.pow(positionDetails.get_enemyY() - positionDetails.getOurY(), 2));
-        //robot.setAhead(distance);
+        if (wantedDistance > 100 || robotDistance > 100){
+        robot.setAhead(robotDistance/5);
+        } else {
+            robot.setTurnRight(positionDetails.getEnemyBearing() + 90);
+            robot.setTurnGunLeft(positionDetails.getEnemyBearing() + 90);
+        }
     }
 
     @Override
