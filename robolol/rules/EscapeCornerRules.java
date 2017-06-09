@@ -75,35 +75,7 @@ public class EscapeCornerRules implements Rule {
         public int compareTo(Rule o) {
             return 0;
         }
-
-        private void escape(boolean left, BattlefieldPositionDetails positionDetails){
-            Double robotDistance = Math.sqrt(Math.pow(positionDetails.get_enemyX() - positionDetails.getOurX(), 2) +
-                    Math.pow(positionDetails.get_enemyY() - positionDetails.getOurY(), 2));
-            if (left){
-                robot.setTurnLeft(positionDetails.getEnemyBearing() * 1.2 + 15);
-            } else {
-                robot.setTurnRight(positionDetails.getEnemyBearing() * 1.2 + 15);
-            }
-            if (robotDistance < 40) {
-                if (left){
-                    robot.setBack(50);
-                    robot.setTurnLeft(positionDetails.getEnemyBearing() + 40);
-                    robot.setAhead(30);
-
-                } else {
-                    robot.setBack(50);
-                    robot.setTurnRight(positionDetails.getEnemyBearing() + 40);
-                    robot.setAhead(30);
-                }
-
-            } else {
-                robot.setAhead(30);
-            }
-        }
-
-        private void escape2(int field, BattlefieldPositionDetails positionDetails){
-
-        }
+    
     }
 
 
