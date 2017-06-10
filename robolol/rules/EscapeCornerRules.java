@@ -47,14 +47,35 @@ public class EscapeCornerRules implements Rule {
 
         @Override
         public void execute(Facts facts) throws Exception {
-            robot.ahead(10);
-            robot.back(10);
+            BattlefieldPositionDetails positionDetails =
+                    (BattlefieldPositionDetails) facts.get("positionDetails");
+            double angle;
+            switch (positionDetails.getOurField()) {
+            case 1:
+                angle = 135 - positionDetails.getOurHeading();
+                robot.turnRight(angle);
+                break;
+            case 2:
+                angle = 225 - positionDetails.getOurHeading();
+                robot.turnRight(angle);
+                break;
+            case 3:
+                angle = 45 - positionDetails.getOurHeading();
+                robot.turnRight(angle);
+                break;
+            default:
+                angle = 315 - positionDetails.getOurHeading();
+                robot.turnRight(angle);
+                break;
+        }
+        robot.setAhead(positionDetails.getBattleFieldWidth() * 0.2);
         }
 
         @Override
         public int compareTo(Rule o) {
             return 0;
         }
+    
     }
 
 

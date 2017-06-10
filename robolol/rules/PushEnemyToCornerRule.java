@@ -40,10 +40,13 @@ public class PushEnemyToCornerRule implements Rule {
         BattlefieldPositionDetails positionDetails =
                 (BattlefieldPositionDetails) facts.get("positionDetails");
 
-        if (positionDetails.getOurField() != positionDetails.getEnemyField()) {
+        Double robotDistance = Math.sqrt(Math.pow(positionDetails.get_enemyX() - positionDetails.getOurX(), 2) +
+                Math.pow(positionDetails.get_enemyY() - positionDetails.getOurY(), 2));
+
+        if (positionDetails.getOurField() != positionDetails.getEnemyField() && robotDistance > 100) {
             return true;
         }
-        if (positionDetails.getEnemyDistanceToClosestCorner() < positionDetails.getOurDistanceToClosestCorner()) {
+        if (positionDetails.getEnemyDistanceToClosestCorner() < positionDetails.getOurDistanceToClosestCorner() && robotDistance > 100) {
             return true;
         }
         return false;
@@ -60,18 +63,18 @@ public class PushEnemyToCornerRule implements Rule {
         switch (positionDetails.getEnemyField()) {
             case 1:
                 wantedX = 1.5 * positionDetails.get_enemyX();
-                wantedY = 600 - 1.5 * (600 - positionDetails.get_enemyY());
+                wantedY = positionDetails.getBattleFieldHeight() - 1.5 * (positionDetails.getBattleFieldHeight() - positionDetails.get_enemyY());
                 break;
             case 2:
-                wantedX = 800 - 1.5 * (800 - positionDetails.get_enemyX());
-                wantedY = 600 - 1.5 * (600 - positionDetails.get_enemyY());
+                wantedX = positionDetails.getBattleFieldWidth() - 1.5 * (positionDetails.getBattleFieldWidth() - positionDetails.get_enemyX());
+                wantedY = positionDetails.getBattleFieldHeight() - 1.5 * (positionDetails.getBattleFieldHeight() - positionDetails.get_enemyY());
                 break;
             case 3:
                 wantedX = 1.5 * positionDetails.get_enemyX();
                 wantedY = 1.5 * positionDetails.get_enemyY();
                 break;
             default:
-                wantedX = 800 - 1.5 * (800 - positionDetails.get_enemyX());
+                wantedX = positionDetails.getBattleFieldWidth() - 1.5 * (positionDetails.getBattleFieldWidth() - positionDetails.get_enemyX());
                 wantedY = 1.5 * positionDetails.get_enemyY();
                 break;
         }
@@ -97,8 +100,8 @@ public class PushEnemyToCornerRule implements Rule {
                 Math.pow(wantedY - positionDetails.getOurY(), 2));
         Double robotDistance = Math.sqrt(Math.pow(positionDetails.get_enemyX() - positionDetails.getOurX(), 2) +
                 Math.pow(positionDetails.get_enemyY() - positionDetails.getOurY(), 2));
-        if (wantedDistance > 100 || robotDistance > 100){
-        robot.setAhead(robotDistance/5);
+        if (wantedDistance > 100 || robotDistance > 100) {
+            robot.setAhead(70);
         } else {
             robot.setTurnRight(positionDetails.getEnemyBearing() + 90);
             robot.setTurnGunLeft(positionDetails.getEnemyBearing() + 90);

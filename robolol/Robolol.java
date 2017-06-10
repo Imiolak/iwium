@@ -7,6 +7,7 @@ import org.jeasy.rules.core.RulesEngineBuilder;
 import robocode.AdvancedRobot;
 import robocode.ScannedRobotEvent;
 import robolol.rules.BattlefieldPositionDetails;
+import robolol.rules.EscapeCornerRules;
 import robolol.rules.PushEnemyToCornerRule;
 
 /**
@@ -15,7 +16,8 @@ import robolol.rules.PushEnemyToCornerRule;
 public class Robolol extends AdvancedRobot {
 
     private RulesEngine rulesEngine;
-    private Rules movementRules;
+    private Rules pushRules;
+    private Rules escapeRules;
     private Facts movementFacts;
 
     @Override
@@ -33,13 +35,16 @@ public class Robolol extends AdvancedRobot {
                 new BattlefieldPositionDetails(getX(), getY(), getHeading(), e.getBearing(),
                         e.getDistance(), getBattleFieldHeight(), getBattleFieldWidth()));
 
-        rulesEngine.fire(movementRules, movementFacts);
+        rulesEngine.fire(pushRules, movementFacts);
+        rulesEngine.fire(escapeRules, movementFacts);
+        fire(5);
     }
 
     private void initRules() {
         rulesEngine = RulesEngineBuilder.aNewRulesEngine()
                 .build();
         movementFacts = new Facts();
-        movementRules = new Rules(new PushEnemyToCornerRule(this));
+        pushRules = new Rules(new PushEnemyToCornerRule(this));
+        escapeRules = new Rules(new EscapeCornerRules(this));
     }
 }
