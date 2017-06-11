@@ -36,10 +36,20 @@ public class EnemyDetails {
     }
 
     public double getFutureX(long when) {
-        return getX() + Math.sin(Math.toRadians(scannedRobot.getHeading())) * scannedRobot.getVelocity() * when;
+        double futureX = getX() + Math.sin(Math.toRadians(scannedRobot.getHeading())) * scannedRobot.getVelocity() * when;
+        if (futureX < 0)
+            return 0.0;
+        if (futureX > 800.0)
+            return 800.0;
+        return futureX;
     }
 
     public double getFutureY(long when) {
-        return getY() + Math.cos(Math.toRadians(scannedRobot.getHeading())) * scannedRobot.getVelocity() * when;
+        double futureY = getY() + Math.cos(Math.toRadians(scannedRobot.getHeading())) * scannedRobot.getVelocity() * when;
+        if (futureY < 0)
+            return 0.0;
+        if (futureY > 600.0)
+            return 600.0;
+        return futureY;
     }
 }
